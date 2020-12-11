@@ -5,6 +5,7 @@ with open(input_file) as f:
     data = f.read()
 
 # Test data
+
 # data = """
 # light red bags contain 1 bright white bag, 2 muted yellow bags.
 # dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -39,7 +40,7 @@ complex_rules = dict(zip(bags, contents))
 
 def search_outer_bags(targets, found=None):
     if not found: found = set()
-    if not targets: return found
+    if not targets: return len(found)
     new_targets = set()
     for target in targets:
         for bag, contents in simple_rules.items():
@@ -52,13 +53,14 @@ def search_inner_bags(target, found=None):
     if not found: found = []
     for bag, amount in complex_rules[target].items():
         for _ in range(amount):
-            found.append(iter(search_inner_bags(bag, found)))
-    return found
+            found.append(bag)
+            search_inner_bags(bag, found)
+    return len(found)
 
 target = 'shinygold'
 
 found_outer = search_outer_bags([target])
-print(f'Outer bags = {len(found_outer)}')
+print(f'Outer bags = {found_outer}')
 
 found_inner = search_inner_bags(target)
-print(f'Inner bags = {len(found_inner)}')
+print(f'Inner bags = {found_inner}')
