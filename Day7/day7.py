@@ -37,9 +37,9 @@ for line in data.split('\n'):
 
 complex_rules = dict(zip(bags, contents))
 
-def search_outer_bags(targets, found):
-    if not targets:
-        return found
+def search_outer_bags(targets, found=None):
+    if not found: found = set()
+    if not targets: return found
     new_targets = set()
     for target in targets:
         for bag, contents in simple_rules.items():
@@ -48,18 +48,17 @@ def search_outer_bags(targets, found):
                 new_targets.add(bag)
     return search_outer_bags(new_targets, found)
 
-def search_inner_bags(target, total):
+def search_inner_bags(target, found=None):
+    if not found: found = []
     for bag, amount in complex_rules[target].items():
         for _ in range(amount):
-            total.append(iter(search_inner_bags(bag, total)))
-    return total
+            found.append(iter(search_inner_bags(bag, found)))
+    return found
 
 target = 'shinygold'
 
-found = set()
-found = search_outer_bags([target], found)
-print(f'Outer bags = {len(found)}')
+found_outer = search_outer_bags([target])
+print(f'Outer bags = {len(found_outer)}')
 
-total = []
-total = search_inner_bags(target, total)
-print(f'Inner bags = {len(total)}')
+found_inner = search_inner_bags(target)
+print(f'Inner bags = {len(found_inner)}')
