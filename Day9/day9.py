@@ -2,8 +2,6 @@ input_file = 'input.txt'
 with open(input_file) as f:
     data = f.read()
 
-preamble = 25
-
 # data = """
 # 35
 # 20
@@ -28,24 +26,28 @@ preamble = 25
 # """
 
 numbers = [int(line) for line in data.split('\n') if line]
-
-def check_number(number, pool):
-    pool = set(pool)
-    for item in pool:
-        target = number - item
-        if target in pool and target != item:
-            return True
+preamble = 25
 
 def run_numbers(numbers, preamble):
     for index, number in enumerate(numbers):
         if index >= preamble:
-            pool = numbers[index-preamble:index]
-            # print(index, number, pool)
-            valid = check_number(number, pool)
+            pool = set(numbers[index-preamble:index])
+            valid = any(number-item in pool for item in pool)
             if not valid:
-                #print(f'{number} is not valid!')
                 return number
     return 'All numbers are valid'
 
-answer = run_numbers(numbers, preamble)
-print(answer)
+def find_range(numbers, target):
+    for n in range(3, 30):
+        for i in range(len(numbers)-n):
+            pool = numbers[i:i+n]
+            if sum(pool) == target:
+                return min(pool) + max(pool)
+
+answer1 = run_numbers(numbers, preamble)
+print(f'Invalid number = {answer1}')
+
+numbers = numbers[:numbers.index(answer1)]
+
+answer2 = find_range(numbers, answer1)
+print(f'Part 2 answer = {answer2}')
