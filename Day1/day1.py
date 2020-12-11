@@ -1,13 +1,7 @@
-import timeit
-
-code_to_test = """
-
-numbers = []
-
 input_file = 'input.txt'
+
 with open(input_file) as f:
-    for line in f:
-        numbers.append(int(line))
+    numbers = [int(line) for line in f]
 
 def find_number(numbers):
     numbers = set(numbers)
@@ -24,13 +18,8 @@ def find_three_numbers(numbers):
             if target in numbers2:
                 return num1 * num2 * target
 
-for _ in range(1):
-    answer = find_number(numbers)
-    answer2 = find_three_numbers(numbers)
+answer = find_number(numbers)
+answer2 = find_three_numbers(numbers)
 
 print(answer)
 print(answer2)
-"""
-
-elapsed_time = timeit.timeit(code_to_test, number = 1)#/1000
-print(elapsed_time)

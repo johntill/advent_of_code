@@ -1,5 +1,6 @@
-info = []
 input_file = 'input.txt'
+
+info = []
 with open(input_file) as f:
     for line in f:
         count, letter, password = line.split(' ')

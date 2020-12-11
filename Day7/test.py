@@ -64,14 +64,13 @@ def search_inner_bags(targets, total):
                 if x == 0:
                     total += value * count
                 else:
-                    new_targets.append((key, value))
-                    total += count
+                    new_targets.append((key, value))               
                 print(total)
-
+            total += count
 
     return search_inner_bags(new_targets, total)
 
 # found = search_outer_bags(target, found)
-# print(f'{len(found)} / {len(rules)}')
+# print(f'{len(found)} / {len(simple_rules)}')
 total = search_inner_bags(target, total)
 print(total)
