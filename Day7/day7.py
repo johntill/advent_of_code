@@ -18,6 +18,7 @@ with open(input_file) as f:
 # dotted black bags contain no other bags.
 # """
 
+data = data.strip()
 data = re.sub('[^a-z0-9,\n]','', data.replace('bags', '').replace('bag', ''))
 data = data.replace('noother', '0none')
 
@@ -25,16 +26,15 @@ bags = []
 contents = []
 simple_rules = {}
 
-for line in data.split('\n'):
-    if line:
-        bag, content = line.split('contain')
-        bags.append(bag)
-        items = content.split(',')
-        colours = [re.search(r'[a-z]\w+', item).group() for item in items]
-        amounts = [int(re.search(r'\d+', item).group()) for item in items]
-        simple_rules[bag] = set(colours)
-        bag_dict = dict(zip(colours, amounts))
-        contents.append(bag_dict)
+for line in data.splitlines():
+    bag, content = line.split('contain')
+    bags.append(bag)
+    items = content.split(',')
+    colours = [re.search(r'[a-z]\w+', item).group() for item in items]
+    amounts = [int(re.search(r'\d+', item).group()) for item in items]
+    simple_rules[bag] = set(colours)
+    bag_dict = dict(zip(colours, amounts))
+    contents.append(bag_dict)
 
 complex_rules = dict(zip(bags, contents))
 

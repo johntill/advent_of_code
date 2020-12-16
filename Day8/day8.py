@@ -2,16 +2,19 @@ input_file = 'input.txt'
 with open(input_file) as f:
     data = f.read()
 
-data = [line for line in data.split('\n') if line]
+data = [line for line in data.splitlines()]
+#data = [line for line in data.split('\n') if line]
+
 instructions = {index+1: line.split(' ') for index, line in enumerate(data)}
 max_pos = len(instructions) + 1
+
 
 def run_program(instructions, commands, pos=1, acc=0):
     completed = set()
     while pos not in completed:
         completed.add(pos)
         command, step = instructions[pos]
-        pos, acc = commands[command](step)
+        pos, acc = commands[command](step, pos, acc)
     return acc
 
 def fix_flaw(instructions, commands):
@@ -25,7 +28,7 @@ def fix_flaw(instructions, commands):
             command, step = instructions[pos]
             if pos == index:
                 command = 'jmp' if command == 'nop' else 'nop'
-            pos, acc = commands[command](step)
+            pos, acc = commands[command](step, pos, acc)
             if pos == max_pos:
                 return acc
 
@@ -34,6 +37,6 @@ commands = {'acc': lambda x, pos, acc: (pos+1, acc+int(x)),
             'jmp': lambda x, pos, acc: (pos+int(x), acc)}
 
 answer1 = run_program(instructions, commands)
-print(answer1)
+print(f'Part 1 = {answer1}')
 answer2 = fix_flaw(instructions, commands)
-print(answer2)
+print(f'Part 2 = {answer2}')
