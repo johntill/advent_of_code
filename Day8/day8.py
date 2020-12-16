@@ -3,11 +3,8 @@ with open(input_file) as f:
     data = f.read()
 
 data = [line for line in data.splitlines()]
-#data = [line for line in data.split('\n') if line]
-
 instructions = {index+1: line.split(' ') for index, line in enumerate(data)}
 max_pos = len(instructions) + 1
-
 
 def run_program(instructions, commands, pos=1, acc=0):
     completed = set()
